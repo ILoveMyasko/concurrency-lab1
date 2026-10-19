@@ -54,7 +54,7 @@ public class Programmer implements Runnable {
     }
 
     public void think() {
-        Thread.yield();
+        Thread.onSpinWait();
     }
 
     @Override
