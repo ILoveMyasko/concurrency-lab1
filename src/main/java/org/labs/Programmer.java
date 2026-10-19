@@ -8,15 +8,13 @@ public class Programmer implements Runnable {
     private Programmer leftNeighbor;
     private Programmer rightNeighbor;
     private final Semaphore spoonTokens;
-    private final Restaurant restaurant;
     private final Table table;
     private final int plateSize;
     private int plate;
     private int eaten;
 
-    public Programmer(int id, int tokens, Restaurant restaurant, Table table, int plateSize) {
+    public Programmer(int id, int tokens, Table table, int plateSize) {
         this.id = id;
-        this.restaurant = restaurant;
         this.table = table;
         this.plateSize = plateSize;
         this.eaten = 0;
@@ -33,7 +31,7 @@ public class Programmer implements Runnable {
         spoonTokens.acquireUninterruptibly(2);
         try {
             if (plate == 0){
-                int refillSize = restaurant.requestRefill(plateSize);
+                int refillSize = table.requestRefill(plateSize);
                 if (refillSize == 0){
                     table.finish();
                     return;
@@ -55,8 +53,8 @@ public class Programmer implements Runnable {
 
     }
 
-    public void think()  {
-        Thread.onSpinWait();
+    public void think() {
+        Thread.yield();
     }
 
     @Override

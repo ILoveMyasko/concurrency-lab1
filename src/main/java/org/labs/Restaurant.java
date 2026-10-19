@@ -10,10 +10,10 @@ public class Restaurant {
 
     public Restaurant(int foodStockSize, int waiterCount) {
         this.foodStock = new AtomicInteger(foodStockSize);
-        this.waiters = new Semaphore(waiterCount);  //TODO: make true?
+        this.waiters = new Semaphore(waiterCount);
     }
 
-    public int requestRefill(int plateSize){
+    public int refill(int plateSize){
         waiters.acquireUninterruptibly();
         try {
             while (true) {
