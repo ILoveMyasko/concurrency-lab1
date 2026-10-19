@@ -38,7 +38,7 @@ public class DiningSimulation {
         }
 
         long startTime = System.nanoTime();
-        try (ExecutorService executor = Executors.newThreadPerTaskExecutor(Thread.ofPlatform().factory())) {
+        try (ExecutorService executor = Executors.newThreadPerTaskExecutor(Thread.ofVirtual().factory())) {
             for (var p : programmers) {
                 executor.submit(p);
             }
