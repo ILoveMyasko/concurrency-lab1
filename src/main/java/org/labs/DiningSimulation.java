@@ -7,8 +7,8 @@ import java.util.stream.IntStream;
 
 public class DiningSimulation {
 
-    public static void simulate(int programmerCount, int waiterCount, int foodStockSize, int plateSize) {
-        boolean invalidArgs = programmerCount < 2 || waiterCount < 1 || plateSize < 1 || foodStockSize < 1;
+    public static int[] simulate(int programmerCount, int waiterCount, int foodStockSize, int plateSize) {
+        boolean invalidArgs = programmerCount < 2 || waiterCount < 1 || plateSize < 1 || foodStockSize < 0;
         if (invalidArgs) {
             System.out.println("Invalid parameters detected. Rolling back to default settings.");
         }
@@ -49,6 +49,10 @@ public class DiningSimulation {
             System.out.println("Programmer" + p.getId() + " " + p.getEaten());
         }
         System.out.println("Execution time " +(endTime - startTime)/ 1_000_000  + "ms");
+
+        return programmers.stream()
+                .mapToInt(Programmer::getEaten)
+                .toArray();
     }
 
 }
