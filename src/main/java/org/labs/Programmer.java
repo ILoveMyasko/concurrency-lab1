@@ -13,6 +13,7 @@ public class Programmer implements Runnable {
     private int plate;
     private int eaten;
 
+
     public Programmer(int id, int tokens, Table table, int plateSize) {
         this.id = id;
         this.table = table;
@@ -27,7 +28,7 @@ public class Programmer implements Runnable {
         this.rightNeighbor = right;
     }
 
-    public void eat(){
+    private void eat(){
         spoonTokens.acquireUninterruptibly(2);
         try {
             if (plate == 0){
@@ -56,14 +57,16 @@ public class Programmer implements Runnable {
     public void think() {
         Thread.onSpinWait();
     }
-
     @Override
     public void run() {
-        while (!table.isFinished() || plate != 0)
+        while (!table.isFinished() || plate > 0)
         {
             eat();
             think();
         }
+
+        leftNeighbor.wakeUp();
+        rightNeighbor.wakeUp();
     }
 
     public void giveSpoonToken(){
@@ -80,6 +83,9 @@ public class Programmer implements Runnable {
         }
     }
 
+    private void wakeUp(){
+        spoonTokens.release(2);
+    }
     public int getEaten() {
         return eaten;
     }
